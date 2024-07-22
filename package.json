@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "dev": "node 0-main.js"
+    "dev": "node 0x00-ES6_basic/0-main.js"
   },
   "keywords": [],
   "author": "",
