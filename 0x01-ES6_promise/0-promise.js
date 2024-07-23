@@ -1,5 +1,5 @@
 export default function getResponseFromAPI() {
-  const stopMakingPromisesThatYouCantKeep= new Promise(
+  const stopMakingPromisesThatYouCantKeep = new Promise(
     (resolve) => {
       resolve();
     },
