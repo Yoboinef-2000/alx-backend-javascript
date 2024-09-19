@@ -11,7 +11,7 @@ function countStudents(thePath) {
       }
 
       // Split the file data into lines and filter out empty lines
-      const lines = data.split('\n').filter(line => line.trim() !== '');
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
 
       if (lines.length <= 1) {
         resolve();
@@ -25,7 +25,7 @@ function countStudents(thePath) {
       const studentsByField = {};
 
       // Process each line
-      lines.forEach(line => {
+      lines.forEach((line) => {
         const [firstname, lastname, age, field] = line.split(',');
 
         if (!firstname || !lastname || !age || !field) {
@@ -46,8 +46,10 @@ function countStudents(thePath) {
 
       // Log the number of students in each field and their names
       for (const field in studentsByField) {
-        const students = studentsByField[field];
-        console.log(`Number of students in ${field}: ${students.length}. List: ${students.join(', ')}`);
+        if (Object.prototype.hasOwnProperty.call(studentsByField, field)) {
+          const students = studentsByField[field];
+          console.log(`Number of students in ${field}: ${students.length}. List: ${students.join(', ')}`);
+        }
       }
 
       resolve(); // Resolve the Promise after successfully processing the data
