@@ -1,0 +1,19 @@
+{
+    "name": "9-api",
+    "version": "1.0.0",
+    "description": "API project with a cart endpoint and unit tests",
+    "main": "api.js",
+    "scripts": {
+      "start": "node api.js",
+      "test": "mocha api.test.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1"
+    },
+    "devDependencies": {
+      "chai": "^4.3.4",
+      "mocha": "^9.1.3",
+      "request": "^2.88.2"
+    },
+    "author": "Your BOyyy Nef"
+}
