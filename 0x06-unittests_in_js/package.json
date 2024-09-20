@@ -5,8 +5,8 @@
         "test": "mocha 0-calcul.test.js"
     },
     "devDependencies": {
-        "chai": "^4.3.7",
+        "chai": "^4.5.0",
         "mocha": "^9.2.2",
-        "sinon": "^14.0.0"
+        "sinon": "^14.0.2"
     }
 }
