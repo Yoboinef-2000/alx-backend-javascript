@@ -27,7 +27,7 @@ describe('calculateNumber', function() {
   });
 
   it('should handle negative numbers correctly for DIVIDE', function() {
-    expect(calculateNumber('DIVIDE', -1.4, -4.6)).to.equal(0.25);
+    expect(calculateNumber('DIVIDE', -1.4, -4.6)).to.equal(0.2);
   });
 
   it('should throw an error for invalid type', function() {
