@@ -1,72 +1,52 @@
 const request = require('request');
 const { expect } = require('chai');
-const app = require('./api'); // Import the Express app
 
-describe('Index page', () => {
-  it('should return correct status code and message', (done) => {
-    request.get('http://localhost:7865/', (error, response, body) => {
-      expect(response.statusCode).to.equal(200);
-      expect(body).to.equal('Welcome to the payment system');
-      done();
-    });
-  });
-});
+describe('API integration test', () => {
+  const API_URL = 'http://localhost:7865';
 
-describe('Cart page', () => {
-  it('should return correct status code for valid cart ID', (done) => {
-    request.get('http://localhost:7865/cart/12', (error, response, body) => {
-      expect(response.statusCode).to.equal(200);
-      expect(body).to.equal('Payment methods for cart 12');
+  it('GET / returns correct response', (done) => {
+    request.get(`${API_URL}/`, (_err, res, body) => {
+      expect(res.statusCode).to.be.equal(200);
+      expect(body).to.be.equal('Welcome to the payment system');
       done();
     });
   });
 
-  it('should return 404 for invalid cart ID', (done) => {
-    request.get('http://localhost:7865/cart/invalid', (error, response, body) => {
-      expect(response.statusCode).to.equal(404);
-      done();
-    });
-  });
-});
-
-describe('Available payments', () => {
-  it('should return correct payment methods object', (done) => {
-    request.get('http://localhost:7865/available_payments', (error, response, body) => {
-      expect(response.statusCode).to.equal(200);
-      const expectedBody = {
-        payment_methods: {
-          credit_cards: true,
-          paypal: false
-        }
-      };
-      expect(JSON.parse(body)).to.deep.equal(expectedBody);
-      done();
-    });
-  });
-});
-
-describe('Login page', () => {
-  it('should welcome the user with their username', (done) => {
-    const postData = { userName: 'Betty' };
-    request.post({
-      url: 'http://localhost:7865/login',
-      json: postData,
-      headers: { 'Content-Type': 'application/json' }
-    }, (error, response, body) => {
-      expect(response.statusCode).to.equal(200);
-      expect(body).to.equal('Welcome Betty');
+  it('GET /cart/:id returns correct response for valid :id', (done) => {
+    request.get(`${API_URL}/cart/47`, (_err, res, body) => {
+      expect(res.statusCode).to.be.equal(200);
+      expect(body).to.be.equal('Payment methods for cart 47');
       done();
     });
   });
 
-  it('should return 400 if no userName is provided', (done) => {
-    request.post({
-      url: 'http://localhost:7865/login',
-      json: {},
-      headers: { 'Content-Type': 'application/json' }
-    }, (error, response, body) => {
-      expect(response.statusCode).to.equal(400);
-      expect(body).to.equal('Missing userName');
+  it('GET /cart/:id returns 404 response for negative number values in :id', (done) => {
+    request.get(`${API_URL}/cart/-47`, (_err, res, _body) => {
+      expect(res.statusCode).to.be.equal(404);
+      done();
+    });
+  });
+
+  it('GET /cart/:id returns 404 response for non-numeric values in :id', (done) => {
+    request.get(`${API_URL}/cart/d200-44a5-9de6`, (_err, res, _body) => {
+      expect(res.statusCode).to.be.equal(404);
+      done();
+    });
+  });
+
+  it('POST /login returns valid response', (done) => {
+    request.post(`${API_URL}/login`, {json: {userName: 'Pinkbrook'}}, (_err, res, body) => {
+      expect(res.statusCode).to.be.equal(200);
+      expect(body).to.be.equal('Welcome Pinkbrook');
+      done();
+    });
+  });
+
+  it('GET /available_payments returns valid response', (done) => {
+    request.get(`${API_URL}/available_payments`, (_err, res, body) => {
+      expect(res.statusCode).to.be.equal(200);
+      expect(JSON.parse(body))
+        .to.be.deep.equal({payment_methods: {credit_cards: true, paypal: false}});
       done();
     });
   });
